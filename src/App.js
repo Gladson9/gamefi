@@ -1,6 +1,8 @@
 // Components
 import Home from "./pages/Home";
 import Nav from "./components/Nav";
+import Header from "./components/Header";
+
 // Styles
 import GlobalStyles from "./components/GlobalStyles";
 // Router
@@ -11,6 +13,7 @@ function App() {
     <div className="App">
       <GlobalStyles />
       <Nav />
+      <Header />
       <Route path={["/game/:id", "/"]}>
         <Home />
       </Route>

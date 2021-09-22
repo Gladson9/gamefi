@@ -1,8 +1,8 @@
 const initialState = {
-  popularGames: [],
-  newGames: [],
-  upcomingGames: [],
-  searched: [],
+  popularGames: { name: "Popular Games" },
+  newGames: { name: "New Games" },
+  upcomingGames: { name: "Upcoming Games" },
+  searched: {},
 };
 
 const gamesReducer = (state = initialState, action) => {
@@ -10,9 +10,15 @@ const gamesReducer = (state = initialState, action) => {
     case "FETCH_GAMES":
       return {
         ...state,
-        popularGames: action.payload.popularGames,
-        newGames: action.payload.newGames,
-        upcomingGames: action.payload.upcomingGames,
+        popularGames: {
+          ...state.popularGames,
+          data: action.payload.popularGames,
+        },
+        newGames: { ...state.newGames, data: action.payload.newGames },
+        upcomingGames: {
+          ...state.upcomingGames,
+          data: action.payload.upcomingGames,
+        },
       };
     case "FETCH_SEARCHED":
       return {

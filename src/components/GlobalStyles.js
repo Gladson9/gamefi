@@ -22,21 +22,27 @@ const GlobalStyles = createGlobalStyle`
     body{
         font-family: 'Montserrat', sans-serif;
         width: 100%;
+        background-color: #191f2b;
+        color:#fff;
+
     }
     h2{
         font-size: 3rem;
         font-family: 'Abril Fatface', cursive;
         font-weight: lighter;
+        color: #fff;
+
     }
     h3{
         font-size: 1.3rem;
-        color: #333;
+        color: #d6d4d4;
         padding: 1.5rem 0;
     }
     p{
-        color: #696969;
+        color: #a1a1a1;
         margin-bottom: 0.5rem;
         font-size: 1.2rem;
+        line-height: 1.4;
     }
     a{
         text-decoration: none;

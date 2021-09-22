@@ -22,12 +22,28 @@ const Home = () => {
   const { newGames, popularGames, upcomingGames, searched } = useSelector(
     (state) => state.games
   );
+  //Switching category
+  const { category } = useSelector((state) => state.category);
+  let type;
+  switch (category) {
+    case "popular":
+      type = popularGames;
+      break;
+    case "upcoming":
+      type = upcomingGames;
+      break;
+    case "new":
+      type = newGames;
+      break;
+    default:
+      console.log("Hello");
+  }
   return (
     <GameList variants={fadeIn} initial="hidden" animate="show">
       <AnimateSharedLayout type="crossfade">
         {searched.length ? (
           <div>
-            <h2>Searched Game</h2>
+            <h2>Searched Results</h2>
             <Games>
               {searched.map((game) => (
                 <GameCard
@@ -41,44 +57,24 @@ const Home = () => {
             </Games>
           </div>
         ) : (
-          ""
+          <>
+            <h2>{type.name}</h2>
+            <Games>
+              {type.data
+                ? type.data.map((game) => (
+                    <GameCard
+                      name={game.name}
+                      released={game.released}
+                      id={game.id}
+                      image={game.background_image}
+                      key={game.id}
+                    />
+                  ))
+                : ""}
+            </Games>
+          </>
         )}
-        <h2>Upcoming Games</h2>
-        <Games>
-          {upcomingGames.map((game) => (
-            <GameCard
-              name={game.name}
-              released={game.released}
-              id={game.id}
-              image={game.background_image}
-              key={game.id}
-            />
-          ))}
-        </Games>
-        <h2>New Games</h2>
-        <Games>
-          {newGames.map((game) => (
-            <GameCard
-              name={game.name}
-              released={game.released}
-              id={game.id}
-              image={game.background_image}
-              key={game.id}
-            />
-          ))}
-        </Games>
-        <h2>Popular Games</h2>
-        <Games>
-          {popularGames.map((game) => (
-            <GameCard
-              name={game.name}
-              released={game.released}
-              id={game.id}
-              image={game.background_image}
-              key={game.id}
-            />
-          ))}
-        </Games>
+
         <AnimatePresence>
           {pathId && <GameDetail pathId={pathId} />}
         </AnimatePresence>
@@ -88,16 +84,25 @@ const Home = () => {
 };
 
 const GameList = styled(motion.div)`
-  padding: 0rem 5rem;
+  padding: 0rem 1rem;
+  margin-bottom: 2rem;
   h2 {
-    padding: 5rem 0rem;
+    padding: 2rem 0rem;
+    font-size: 2.2rem;
+  }
+
+  @media screen and (min-width: 720px) {
+    padding: 0rem 5rem;
   }
 `;
 const Games = styled(motion.div)`
   min-height: 80vh;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
   grid-column-gap: 3rem;
   grid-row-gap: 5rem;
+
+  @media screen and (min-width: 420px) {
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  }
 `;
 export default Home;

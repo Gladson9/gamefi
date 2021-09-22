@@ -7,6 +7,7 @@ import Stars from "react-stars-display";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { smallImage } from "./../util";
+
 // platform icons
 import {
   FaDesktop,
@@ -31,36 +32,76 @@ const GameDetail = ({ pathId }) => {
     }
   };
   // get platform icons
-  const getPlatformIcon = (platform) => {
+  const getPlatformIcon = (platform, key) => {
     switch (platform) {
       case "pc":
-        return <FaDesktop title={platform.toUpperCase()} className="icon" />;
+        return (
+          <FaDesktop
+            key={key}
+            title={platform.toUpperCase()}
+            className="icon"
+          />
+        );
       case "playstation":
         return (
-          <FaPlaystation title={platform.toUpperCase()} className="icon" />
+          <FaPlaystation
+            key={key}
+            title={platform.toUpperCase()}
+            className="icon"
+          />
         );
       case "xbox":
-        return <FaXbox title={platform.toUpperCase()} className="icon" />;
+        return (
+          <FaXbox key={key} title={platform.toUpperCase()} className="icon" />
+        );
       case "ios":
-        return <SiIos title={platform.toUpperCase()} className="icon" />;
+        return (
+          <SiIos key={key} title={platform.toUpperCase()} className="icon" />
+        );
       case "android":
-        return <FaAndroid title={platform.toUpperCase()} className="icon" />;
+        return (
+          <FaAndroid
+            key={key}
+            title={platform.toUpperCase()}
+            className="icon"
+          />
+        );
       case "mac":
-        return <FaApple title={platform.toUpperCase()} className="icon" />;
+        return (
+          <FaApple key={key} title={platform.toUpperCase()} className="icon" />
+        );
       case "linux":
-        return <FaLinux title={platform.toUpperCase()} className="icon" />;
+        return (
+          <FaLinux key={key} title={platform.toUpperCase()} className="icon" />
+        );
       case "nintendo":
         return (
-          <SiNintendoswitch title={platform.toUpperCase()} className="icon" />
+          <SiNintendoswitch
+            key={key}
+            title={platform.toUpperCase()}
+            className="icon"
+          />
         );
       case "atari":
-        return <SiAtari title={platform.toUpperCase()} className="icon" />;
+        return (
+          <SiAtari key={key} title={platform.toUpperCase()} className="icon" />
+        );
       case "sega":
-        return <SiSega title={platform.toUpperCase()} className="icon" />;
+        return (
+          <SiSega key={key} title={platform.toUpperCase()} className="icon" />
+        );
       case "web":
-        return <FaChrome title={platform.toUpperCase()} className="icon" />;
+        return (
+          <FaChrome key={key} title={platform.toUpperCase()} className="icon" />
+        );
       default:
-        return <FaGamepad title={platform.toUpperCase()} className="icon" />;
+        return (
+          <FaGamepad
+            key={key}
+            title={platform.toUpperCase()}
+            className="icon"
+          />
+        );
     }
   };
 
@@ -73,7 +114,7 @@ const GameDetail = ({ pathId }) => {
         <CardShadow onClick={exitDetailHandler} className="shadow">
           <Detail layoutId={pathId}>
             <Stats>
-              <div className="rating">
+              <Rating>
                 <motion.h3 layoutId={`title ${pathId}`}>{game.name}</motion.h3>
                 <p>Rating: {game.rating}</p>
                 <Stars
@@ -82,17 +123,12 @@ const GameDetail = ({ pathId }) => {
                   spacing={2}
                   fill="#ea9c46"
                 />
-              </div>
+              </Rating>
               <Info>
                 <h3>Platforms</h3>
                 <Platforms>
                   {game.parent_platforms.map((data) =>
-                    // <img
-                    //   key={data.platform.id}
-                    //   src={getPlatformImage(data.platform.name)}
-                    //   alt={data.platform.name}
-                    // />
-                    getPlatformIcon(data.platform.slug)
+                    getPlatformIcon(data.platform.slug, data.platform.id)
                   )}
                 </Platforms>
               </Info>
@@ -127,7 +163,7 @@ const CardShadow = styled(motion.div)`
   width: 100%;
   min-height: 100vh;
   overflow-y: scroll;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.61);
   position: fixed;
   top: 0;
   left: 0;
@@ -136,7 +172,8 @@ const CardShadow = styled(motion.div)`
     width: 0.5rem;
   }
   &::-webkit-scrollbar-thumb {
-    background-color: #ff7676;
+    background-color: #ff5e00;
+    border-radius: 1rem;
   }
   &::-webkit-scrollbar-track {
     background: white;
@@ -146,13 +183,16 @@ const CardShadow = styled(motion.div)`
 const Detail = styled(motion.div)`
   width: 80%;
   border-radius: 1rem;
-  padding: 2rem 5rem;
-  background: white;
+  padding: 2rem;
+  background: #293145;
   position: absolute;
   left: 10%;
   color: black;
   img {
     width: 100%;
+  }
+  @media screen and (min-width: 1024px) {
+    padding: 2rem 5rem;
   }
 `;
 
@@ -160,9 +200,25 @@ const Stats = styled(motion.div)`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-direction: column;
   img {
     width: 2rem;
     display: inline;
+  }
+
+  @media screen and (min-width: 650px) {
+    flex-direction: row;
+  }
+`;
+
+const Rating = styled(motion.div)`
+  text-align: center;
+
+  @media screen and (min-width: 650px) {
+    text-align: left;
+    h3 {
+      font-size: 2rem;
+    }
   }
 `;
 
@@ -173,21 +229,40 @@ const Info = styled(motion.div)`
 const Platforms = styled(motion.div)`
   display: flex;
   justify-content: space-evenly;
+  flex-wrap: wrap;
   .icon {
-    margin-left: 3rem;
+    margin: 1rem;
     font-size: 2.5rem;
+    color: #fff;
+  }
+  @media screen and (min-width: 1024px) {
+    flex-wrap: nowrap;
   }
 `;
 
 const Media = styled(motion.div)`
-  margin-top: 5rem;
+  margin-top: 1rem;
   img {
     width: 100%;
   }
 `;
 
 const Description = styled(motion.div)`
-  margin: 5rem 0rem;
+  margin: 2rem 0rem;
+  p {
+    font-size: 1rem;
+  }
+
+  @media screen and (min-width: 768px) {
+    p {
+      font-size: 1.3rem;
+    }
+  }
+  @media screen and (min-width: 1024px) {
+    p {
+      font-size: 1.5rem;
+    }
+  }
 `;
 
 export default GameDetail;
