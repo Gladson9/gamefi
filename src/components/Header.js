@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 const Header = () => {
   const dispatch = useDispatch();
 
@@ -9,11 +9,28 @@ const Header = () => {
     dispatch({ type: "CHANGE_CATEGORY", payload: { category: cate } });
     dispatch({ type: "CLEAR_SEARCHED" });
   };
+  const { category } = useSelector((state) => state.category);
+
   return (
     <StyledHeader>
-      <button onClick={() => changeCategory("popular")}>Popular</button>
-      <button onClick={() => changeCategory("upcoming")}>Upcoming</button>
-      <button onClick={() => changeCategory("new")}>New</button>
+      <button
+        className={category === "popular" ? "current" : ""}
+        onClick={() => changeCategory("popular")}
+      >
+        Popular
+      </button>
+      <button
+        className={category === "upcoming" ? "current" : ""}
+        onClick={() => changeCategory("upcoming")}
+      >
+        Upcoming
+      </button>
+      <button
+        className={category === "new" ? "current" : ""}
+        onClick={() => changeCategory("new")}
+      >
+        New
+      </button>
     </StyledHeader>
   );
 };
@@ -29,8 +46,12 @@ const StyledHeader = styled(motion.div)`
     background: transparent;
     font-size: 1.2rem;
     font-weight: bold;
-    color: #ff5e00;
+    color: #ffad7d;
     border-radius: 0.3rem;
+  }
+
+  .current {
+    color: #ff5e00;
   }
 `;
 

@@ -36,7 +36,7 @@ const Nav = () => {
           value={textInput}
           onChange={inputHandler}
           type="text"
-          placeholder="Enter Game Name"
+          placeholder="Search game..."
         />
         <button onClick={submitSearch}>
           <FaSearch />
