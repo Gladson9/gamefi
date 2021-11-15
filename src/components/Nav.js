@@ -7,11 +7,15 @@ import { FaGamepad, FaSearch } from "react-icons/fa";
 
 // redux and routes
 import { fetchSearch } from "../actions/gamesAction";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { signOut } from "@firebase/auth";
+import { auth } from "../firebase";
 
 const Nav = () => {
   const [textInput, setTextInput] = useState("");
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
 
   const inputHandler = (e) => {
     setTextInput(e.target.value);
@@ -25,12 +29,17 @@ const Nav = () => {
     dispatch({ type: "CLEAR_SEARCHED" });
   };
 
+  const logout = () => {
+    signOut(auth);
+  };
   return (
     <StyledNav variants={fadeIn} initial="hidden" animate="show">
-      <Logo onClick={clearSearchedData}>
-        <FaGamepad className="logo" />
-        <h1>GameFi</h1>
-      </Logo>
+      <Link to="/">
+        <Logo onClick={clearSearchedData}>
+          <FaGamepad className="logo" />
+          <h1>GameFi</h1>
+        </Logo>
+      </Link>
       <form className="search">
         <input
           value={textInput}
@@ -42,6 +51,12 @@ const Nav = () => {
           <FaSearch />
         </button>
       </form>
+      <div>
+        {!user && <Link to="/signup">SIGN UP</Link>}
+        {!user && <Link to="/login">LOG IN</Link>}
+        {user && <Link to="/dashboard">My Library</Link>}
+        {user && <span onClick={logout}>LOGOUT</span>}
+      </div>
     </StyledNav>
   );
 };
@@ -50,6 +65,27 @@ const Nav = () => {
 const StyledNav = styled(motion.nav)`
   padding: 3rem 2rem;
   text-align: center;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  a {
+    color: #fff;
+  }
+  a:hover {
+    color: #a3a3a3;
+  }
+  div {
+    flex: 1;
+    display: flex;
+    justify-content: space-evenly;
+  }
+  form {
+    flex: 5;
+  }
+  span {
+    color: #ff0000;
+    cursor: pointer;
+  }
   input {
     width: 80%;
     padding: 0.5rem 1rem;
@@ -87,6 +123,7 @@ const Logo = styled(motion.div)`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  color: #fff;
   .logo {
     margin-right: 1rem;
     font-size: 3rem;

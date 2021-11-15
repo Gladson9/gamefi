@@ -28,7 +28,8 @@ const GameDetail = ({ pathId }) => {
     const element = e.target;
     if (element.classList.contains("shadow")) {
       document.body.style.overflow = "auto";
-      history.push("/");
+      // history.push("/");
+      history.goBack();
     }
   };
   // get platform icons
@@ -167,7 +168,7 @@ const CardShadow = styled(motion.div)`
   position: fixed;
   top: 0;
   left: 0;
-
+  z-index: 1000;
   &::-webkit-scrollbar {
     width: 0.5rem;
   }
