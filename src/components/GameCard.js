@@ -13,8 +13,9 @@ import { useSelector } from "react-redux";
 import { doc, setDoc, updateDoc, deleteDoc } from "@firebase/firestore";
 import { db } from "../firebase";
 import { useHistory } from "react-router";
+import { Link } from "react-router-dom";
 
-const GameCard = ({ name, released, id, image, inLibrary, type }) => {
+const GameCard = ({ name, released, id, image, inLibrary, type, location }) => {
   const { user } = useSelector((state) => state.user);
   const { libraryGames } = useSelector((state) => state.library);
   const history = useHistory();
@@ -23,14 +24,11 @@ const GameCard = ({ name, released, id, image, inLibrary, type }) => {
   const [gameInLibrary, setGameInLibrary] = useState(
     libraryGames.some((game) => game.id === id.toString())
   );
-  // const [addedToLibrary, setAddedToLibrary] = useState(false);
   // load details
   const dispatch = useDispatch();
 
   const loadDetailHandler = () => {
-    // document.body.style.overflow = "hidden";
     dispatch(loadGameDetails(id));
-    history.push(`/game/${id}`);
   };
 
   const addToLibrary = async (e) => {
@@ -86,32 +84,29 @@ const GameCard = ({ name, released, id, image, inLibrary, type }) => {
       initial="hidden"
       animate="show"
       layoutId={stringPathId}
+      onClick={loadDetailHandler}
     >
-      {/* <Link to={`/game/${id}`}> */}
-      <motion.img
-        onClick={loadDetailHandler}
-        layoutId={`image ${stringPathId}`}
-        src={smallImage(image, 640)}
-        alt={name}
-      />
-      <motion.h3 onClick={loadDetailHandler} layoutId={`title ${stringPathId}`}>
-        {name}
-      </motion.h3>
-      {/* </Link> */}
+      <Link
+        to={{
+          pathname: `/game/${id}`,
+          state: { background: location },
+        }}
+      >
+        <motion.img
+          layoutId={`image ${stringPathId}`}
+          src={smallImage(image, 640)}
+          alt={name}
+        />
+        <motion.h3 layoutId={`title ${stringPathId}`}>{name}</motion.h3>
+      </Link>
       <div>
         <p>Released: {released}</p>
         {inLibrary ? (
           <StyledSelect value={category} onChange={handleCategoryChange}>
-            <option className="options" value="wishlist">
-              Wishlist
-            </option>
-            <option className="options" value="current">
-              Currently Playing
-            </option>
-            <option className="options" value="completed">
-              Completed
-            </option>
-            <option className="options" value="remove">
+            <option value="wishlist">Wishlist</option>
+            <option value="current">Currently Playing</option>
+            <option value="completed">Completed</option>
+            <option className="remove" value="remove">
               Remove from Library
             </option>
           </StyledSelect>
@@ -167,5 +162,8 @@ const StyledSelect = styled.select`
   padding: 0.2rem 1rem;
   border-radius: 0.2rem;
   margin-right: 1rem;
+  .remove {
+    color: red;
+  }
 `;
 export default GameCard;

@@ -12,7 +12,7 @@ const GlobalStyles = createGlobalStyle`
     width: 0.5rem;
   }
   &::-webkit-scrollbar-thumb {
-    background-color: #333;
+    background-color: #FF5E00;
     border-radius: 3rem;
   }
   &::-webkit-scrollbar-track {

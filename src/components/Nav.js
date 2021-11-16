@@ -11,12 +11,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { signOut } from "@firebase/auth";
 import { auth } from "../firebase";
+import { useHistory } from "react-router";
 
 const Nav = () => {
   const [textInput, setTextInput] = useState("");
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
-
+  const history = useHistory();
   const inputHandler = (e) => {
     setTextInput(e.target.value);
   };
@@ -30,6 +31,7 @@ const Nav = () => {
   };
 
   const logout = () => {
+    history.push("/");
     signOut(auth);
   };
   return (

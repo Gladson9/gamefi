@@ -4,7 +4,6 @@ import { loadGames } from "../actions/gamesAction";
 import styled from "styled-components";
 import { motion, AnimatePresence, AnimateSharedLayout } from "framer-motion";
 import GameCard from "./../components/GameCard";
-import GameDetail from "./../components/GameDetail";
 import { useLocation } from "react-router";
 import { fadeIn } from "./../animations";
 import Header from "../components/Header";
@@ -12,7 +11,6 @@ import Header from "../components/Header";
 const Home = () => {
   // getting the current location
   const location = useLocation();
-  const pathId = location.pathname.split("/")[2];
   // Fecthing Games from api and storing in the redux store
   const dispatch = useDispatch();
   useEffect(() => {
@@ -36,8 +34,6 @@ const Home = () => {
     case "new":
       type = newGames;
       break;
-    default:
-      console.log("Hello");
   }
   return (
     <>
@@ -56,6 +52,7 @@ const Home = () => {
                     id={game.id}
                     image={game.background_image}
                     key={game.id}
+                    location={location}
                   />
                 ))}
               </Games>
@@ -72,6 +69,7 @@ const Home = () => {
                         id={game.id}
                         image={game.background_image}
                         key={game.id}
+                        location={location}
                       />
                     ))
                   : ""}
@@ -79,9 +77,9 @@ const Home = () => {
             </>
           )}
 
-          <AnimatePresence>
+          {/* <AnimatePresence>
             {pathId && <GameDetail pathId={pathId} />}
-          </AnimatePresence>
+          </AnimatePresence> */}
         </AnimateSharedLayout>
       </GameList>
     </>

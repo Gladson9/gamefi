@@ -4,7 +4,7 @@ import Nav from "./components/Nav";
 // Styles
 import GlobalStyles from "./components/GlobalStyles";
 // Router
-import { Route } from "react-router";
+import { Route, Switch, useLocation } from "react-router-dom";
 import SignUp from "./pages/SignUp";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
@@ -14,6 +14,7 @@ import { useEffect } from "react";
 import { onAuthStateChanged } from "@firebase/auth";
 import { auth } from "./firebase";
 import { useDispatch } from "react-redux";
+import GameDetail from "./components/GameDetail";
 
 function App() {
   const dispatch = useDispatch();
@@ -32,19 +33,24 @@ function App() {
     });
   }, [dispatch]);
 
+  let location = useLocation();
+  let background = location.state && location.state.background;
+
   return (
     <div className="App">
       <GlobalStyles />
       <Nav />
-      <Route exact path={["/", "/game/:id"]}>
-        <Home />
-      </Route>
-      <Route path="/signup" component={SignUp} exact />
-      <Route path="/login" component={Login} exact />
-      <PrivateRoute path={["/dashboard", "/game/:id"]} exact>
-        <Dashboard />
-      </PrivateRoute>
-      <Route path="/password_reset" component={PasswordReset} exact />
+      <Switch location={background || location}>
+        <Route exact path="/">
+          <Home />
+        </Route>
+        <Route path="/signup" component={SignUp} exact />
+        <Route path="/login" component={Login} exact />
+        <PrivateRoute path="/dashboard" component={Dashboard} exact />
+
+        <Route path="/password_reset" component={PasswordReset} exact />
+      </Switch>
+      {background && <Route path="/game/:id" children={<GameDetail />} />}
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { signInWithEmailAndPassword } from "@firebase/auth";
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, Redirect } from "react-router-dom";
 import styled from "styled-components";
 import Alert from "../components/Alert";
 import { auth } from "../firebase";
@@ -17,24 +17,15 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const userDetails = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      console.log(userDetails);
+      await signInWithEmailAndPassword(auth, email, password);
       history.push("/dashboard");
     } catch (error) {
       setError(error.message);
     }
   };
-  useEffect(() => {
-    if (user) {
-      history.push("/dashboard");
-    }
-  }, [user]);
-
-  return (
+  return user ? (
+    <Redirect to="/dashboard" />
+  ) : (
     <LoginContainer>
       <h2>Log In</h2>
       {error && <Alert message={error} />}

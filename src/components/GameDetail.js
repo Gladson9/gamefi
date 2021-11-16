@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 // styling and animation
 import styled from "styled-components";
 import { motion } from "framer-motion";
@@ -28,7 +28,6 @@ const GameDetail = ({ pathId }) => {
     const element = e.target;
     if (element.classList.contains("shadow")) {
       document.body.style.overflow = "auto";
-      // history.push("/");
       history.goBack();
     }
   };
@@ -105,7 +104,9 @@ const GameDetail = ({ pathId }) => {
         );
     }
   };
-
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+  }, []);
   // get data from redux store
   const { game, screenshots, isLoading } = useSelector((state) => state.detail);
 

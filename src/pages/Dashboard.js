@@ -10,26 +10,24 @@ import Avatar from "./../components/Avatar";
 import { motion } from "framer-motion";
 import { FaHeart, FaMedal } from "react-icons/fa";
 import { IoLogoGameControllerB } from "react-icons/io";
+import { useLocation } from "react-router-dom";
 const Dashboard = () => {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const { libraryGames } = useSelector((state) => state.library);
-
-  const loadLibraryData = () => {
-    const result = onSnapshot(
-      collection(db, "library", user.uid, "games"),
-      (doc) => {
-        doc.forEach((game) => {
-          dispatch(loadLibraryGameData(game.id, game.data()));
-        });
-      }
-    );
-  };
+  const location = useLocation();
   useEffect(() => {
     if (user) {
-      loadLibraryData();
+      const result = onSnapshot(
+        collection(db, "library", user.uid, "games"),
+        (doc) => {
+          doc.forEach((game) => {
+            dispatch(loadLibraryGameData(game.id, game.data()));
+          });
+        }
+      );
     }
-  }, []);
+  }, [user]);
 
   return (
     <DashboardContainer>
@@ -45,6 +43,7 @@ const Dashboard = () => {
           (game) =>
             game.type === "wishlist" && (
               <GameCard
+                location={location}
                 inLibrary={true}
                 type={game.type}
                 name={game.name}
@@ -64,6 +63,7 @@ const Dashboard = () => {
           (game) =>
             game.type === "current" && (
               <GameCard
+                location={location}
                 inLibrary={true}
                 type={game.type}
                 name={game.name}
@@ -83,6 +83,7 @@ const Dashboard = () => {
           (game) =>
             game.type === "completed" && (
               <GameCard
+                location={location}
                 inLibrary={true}
                 type={game.type}
                 name={game.name}

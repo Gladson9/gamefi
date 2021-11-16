@@ -20,16 +20,10 @@ const SignUp = () => {
     }
 
     try {
-      const userDetails = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      console.log(userDetails);
+      await createUserWithEmailAndPassword(auth, email, password);
       history.push("/login");
     } catch (error) {
       setError(error.message);
-      console.log(error);
     }
   };
   return (
