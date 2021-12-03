@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loadGames } from "../actions/gamesAction";
 import styled from "styled-components";
@@ -13,9 +13,6 @@ const Home = () => {
   const location = useLocation();
   // Fecthing Games from api and storing in the redux store
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(loadGames());
-  }, [dispatch]);
 
   //   Getting data from the redux store
   const { newGames, popularGames, upcomingGames, searched } = useSelector(
@@ -23,18 +20,29 @@ const Home = () => {
   );
   //Switching category
   const { category } = useSelector((state) => state.category);
-  let type;
-  switch (category) {
-    case "popular":
-      type = popularGames;
-      break;
-    case "upcoming":
-      type = upcomingGames;
-      break;
-    case "new":
-      type = newGames;
-      break;
-  }
+  const [type, setType] = useState(popularGames);
+
+  useEffect(() => {
+    dispatch(loadGames());
+  }, [dispatch]);
+
+  // let type;
+  useEffect(() => {
+    switch (category) {
+      case "popular":
+        setType(popularGames);
+        // type = popularGames;
+        break;
+      case "upcoming":
+        // type = upcomingGames;
+        setType(upcomingGames);
+        break;
+      case "new":
+        // type = newGames;
+        setType(newGames);
+        break;
+    }
+  }, [category, popularGames]);
   return (
     <>
       <Header />
@@ -59,7 +67,7 @@ const Home = () => {
             </div>
           ) : (
             <>
-              <h2>{type.name}</h2>
+              <h2>{type?.name}</h2>
               <Games>
                 {type.data
                   ? type.data.map((game) => (
@@ -103,6 +111,7 @@ const Games = styled(motion.div)`
   display: grid;
   grid-column-gap: 3rem;
   grid-row-gap: 5rem;
+  justify-items: center;
   @media screen and (min-width: 420px) {
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   }

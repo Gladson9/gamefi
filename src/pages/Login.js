@@ -23,6 +23,14 @@ const Login = () => {
       setError(error.message);
     }
   };
+  const handleGuestLogin = async () => {
+    try {
+      await signInWithEmailAndPassword(auth, "guest@gmail.com", "guest123");
+      history.push("/dashboard");
+    } catch (error) {
+      setError(error.message);
+    }
+  };
   return user ? (
     <Redirect to="/dashboard" />
   ) : (
@@ -47,6 +55,9 @@ const Login = () => {
         />
         <button type="submit">Log in</button>
       </form>
+      <button onClick={handleGuestLogin} type="button">
+        Log in as Guest
+      </button>
       <Link to="/signup">Don't have an account? Sign up.</Link>
       <Link to="/password_reset">Forgot your password?</Link>
     </LoginContainer>
@@ -68,27 +79,40 @@ const LoginContainer = styled.div`
     justify-content: space-evenly;
 
     input {
-      width: 15rem;
+      width: 19rem;
       padding: 0.6rem 1rem;
       background-color: #293145;
       color: #ffffff;
-
+      border-radius: 1rem;
       border: none;
     }
 
     button {
       width: max-content;
-      padding: 0.5rem 1rem;
+      padding: 0.5rem 1.5rem;
+      border-radius: 1rem;
       border: none;
       cursor: pointer;
+      background-color: #ff5e00;
     }
     button:hover {
-      background-color: #a3a3a3;
+      background-color: #ca5c16;
     }
+  }
+  button {
+    width: max-content;
+    padding: 0.5rem 1.5rem;
+    border-radius: 1rem;
+    border: none;
+    cursor: pointer;
+    background-color: #ff5e00;
+  }
+  button:hover {
+    background-color: #ca5c16;
   }
   a {
     color: #ffffff;
-    margin-top: 0.5rem;
+    margin-top: 1rem;
     border-bottom: 0.01rem solid #ffffff;
   }
   a:hover {

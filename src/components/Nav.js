@@ -36,7 +36,7 @@ const Nav = () => {
   };
   return (
     <StyledNav variants={fadeIn} initial="hidden" animate="show">
-      <Link to="/">
+      <Link className="logo-container" to="/">
         <Logo onClick={clearSearchedData}>
           <FaGamepad className="logo" />
           <h1>GameFi</h1>
@@ -53,7 +53,7 @@ const Nav = () => {
           <FaSearch />
         </button>
       </form>
-      <div>
+      <div className="nav-links">
         {!user && <Link to="/signup">SIGN UP</Link>}
         {!user && <Link to="/login">LOG IN</Link>}
         {user && <Link to="/dashboard">My Library</Link>}
@@ -70,16 +70,20 @@ const StyledNav = styled(motion.nav)`
   display: flex;
   justify-content: space-around;
   align-items: center;
+  flex-wrap: wrap;
   a {
     color: #fff;
   }
   a:hover {
     color: #a3a3a3;
   }
-  div {
+  .nav-links {
     flex: 1;
     display: flex;
     justify-content: space-evenly;
+  }
+  .nav-links > a {
+    padding: 0rem 1rem;
   }
   form {
     flex: 5;
@@ -108,7 +112,21 @@ const StyledNav = styled(motion.nav)`
     color: white;
   }
 
-  @media screen and (min-width: 720px) {
+  .logo-container {
+    flex: 1;
+  }
+  @media screen and (min-width: 319px) {
+    flex-direction: column;
+    .nav-links {
+      margin-top: 1.5rem;
+    }
+  }
+
+  @media screen and (min-width: 830px) {
+    flex-direction: row;
+    form {
+      flex: 3;
+    }
     input {
       width: 70%;
     }
@@ -131,5 +149,7 @@ const Logo = styled(motion.div)`
     font-size: 3rem;
     fill: #ff5e00;
   }
+  /* @media screen and (min-width: 319px) {
+  } */
 `;
 export default Nav;

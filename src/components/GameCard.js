@@ -127,7 +127,8 @@ const GameCard = ({ name, released, id, image, inLibrary, type, location }) => {
 const StyledGame = styled(motion.div)`
   background-color: #293145;
   min-height: 30vh;
-  max-width: 25rem;
+  /* max-width: 25rem; */
+  max-width: 20rem;
   border-radius: 1rem;
   cursor: pointer;
   overflow: hidden;
@@ -154,6 +155,9 @@ const StyledGame = styled(motion.div)`
   }
   .icon:hover {
     color: #f19456;
+  }
+  @media screen and (min-width: 425px) {
+    max-width: 25rem;
   }
 `;
 const StyledSelect = styled.select`
